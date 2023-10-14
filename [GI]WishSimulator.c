@@ -163,9 +163,10 @@ int main()
                 }
                 tenCountProgress++;
             }
+            sumCount += 10;
         }
 
-        sumCount += 10;
+        
 
         printf("Number of wishes: %d\n", sumCount);
 
