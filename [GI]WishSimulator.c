@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "[GI]ThreeStarList.h"
 
 #define targetFiveStar 0.5 // Get the 'UP' items
 #define threeStar 0.943
@@ -60,8 +61,8 @@ int main()
             if (baseFive < 74 && baseFour != 10)   //If not triggered guaranteed system.
             {
                 if (randomNum <= drawCount * threeStar) // Less or equal to 0.943 get three stars items.
-                {
-                    printf("\033[1;34m You get a Three Star Item.\n");
+                {   
+                    threeStarRoll();
                 } else if (randomNum > drawCount * threeStar && randomNum <= drawCount * (threeStar + normalFourStars)) // Larger than 0.943 and smaller than 0.994
                 {
                     printf("\033[1;35m You get a Four Star Item.\n");
@@ -89,16 +90,16 @@ int main()
                 }
             } else if (baseFive >= 74)
             {
-                if (randomNum >= (1 - drawCount * normalFiveStars) && randomNum <= maxChance) // Get the range for five star first.
+                if (randomNum >= (1 - drawCount * normalFiveStars) && randomNum <= maxChance) // reverse range lol
                 {
                     printf("\033[1;33m You get a Five Star Item.\n");
                     baseFive = 1;
                     baseFour = 1;
-                } else if (randomNum <= (1 - drawCount * normalFiveStars) * threeStar ) //Similar method applied to four star
+                } else if (randomNum <= (1 - drawCount * normalFiveStars) * threeStar )
                 {
-                    printf("\033[1;34m You get a Three Star Item.\n");
+                    threeStarRoll();
                     baseFive++;
-                } else if (randomNum > (1 - drawCount * normalFiveStars) * threeStar && randomNum <= (1 - drawCount * normalFiveStars) * (threeStar + normalFourStars)) //Similar method applied to three star
+                } else if (randomNum > (1 - drawCount * normalFiveStars) * threeStar && randomNum <= (1 - drawCount * normalFiveStars) * (threeStar + normalFourStars))
                 {
                     printf("\033[1;35m You get a Four Star Item.\n");
                     baseFour = 1;
@@ -113,16 +114,16 @@ int main()
             while (tenCountProgress <= drawCount) // each elements is still calculated independently.
             {
                 randomNum = (double)rand() / RAND_MAX; //Get random value from 0 to 1.
-                if (baseFive < 74 && baseFour != 10)   
+                if (baseFive < 74 && baseFour != 10)   //If not triggered guaranteed system.
                 {
-                    if (randomNum <= newDrawCount * threeStar) 
+                    if (randomNum <= newDrawCount * threeStar) // Less or equal to 0.943 get three stars items.
                     {
-                        printf("\033[1;34m You get a Three Star Item.\n");
-                    } else if (randomNum > newDrawCount * threeStar && randomNum <= newDrawCount * (threeStar + normalFourStars)) 
+                        threeStarRoll();
+                    } else if (randomNum > newDrawCount * threeStar && randomNum <= newDrawCount * (threeStar + normalFourStars)) // Larger than 0.943 and smaller than 0.994
                     {
                     printf("\033[1;35m You get a Four Star Item.\n");
                     baseFour = 1;
-                    } else if (randomNum > newDrawCount  * (threeStar + normalFourStars) && randomNum <= maxChance) 
+                    } else if (randomNum > newDrawCount  * (threeStar + normalFourStars) && randomNum <= maxChance) // Larger than 0.994 and smaller or equal to 1.000
                     {
                         printf("\033[1;33m You get a Five Star Item.\n");
                         baseFive = 1;
@@ -141,18 +142,18 @@ int main()
                     {
                         printf("\033[1;33m You get a Five Star Item.\n");
                         baseFive = 1;
-                        baseFour = 1; 
+                        baseFour = 1; //both of them are reset if five star appeared.
                     }
                 } else if (baseFive >= 74)
                 {
-                    if (randomNum >= (1 - newDrawCount * normalFiveStars) && randomNum <= maxChance) 
+                    if (randomNum >= (1 - newDrawCount * normalFiveStars) && randomNum <= maxChance) // reverse range lol
                     {
                         printf("\033[1;33m You get a Five Star Item.\n");
                         baseFive = 1;
                         baseFour = 1;
                     } else if (randomNum <= (1 - newDrawCount * normalFiveStars) * threeStar )
                     {
-                        printf("\033[1;34m You get a Three Star Item.\n");
+                        threeStarRoll();
                         baseFive++;
                     } else if (randomNum > (1 - newDrawCount * normalFiveStars) * threeStar && randomNum <= (1 - newDrawCount * normalFiveStars) * (threeStar + normalFourStars))
                     {
