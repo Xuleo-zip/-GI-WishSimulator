@@ -30,28 +30,48 @@ void FiveStarNotUp()
     }
 }
 
-void FiveStarUpBanner(int whichBanner, int *fiveStarGuaranteed)
+void FiveStarUpBanner(int whichBanner, int *fiveStarGuaranteed, int *totalUpCount)
 {
+    int randomNum = rand() % 2;
     if (whichBanner == 0)
     {
         if (*fiveStarGuaranteed == 0)
         {
-            FiveStarNotUp();
-            *fiveStarGuaranteed = 1;
+            if(randomNum == 0)
+            {
+                FiveStarNotUp();
+                *fiveStarGuaranteed = 1;
+            } else if (randomNum == 1)
+            {
+                printf("\033[1;33m Hutao\n");
+                *totalUpCount += 1;
+                *fiveStarGuaranteed = 0;
+            }
+            
         } else if (*fiveStarGuaranteed == 1)
         {
             printf("\033[1;33m Hutao\n");
+            *totalUpCount += 1;
             *fiveStarGuaranteed = 0;
         }
     } else if (whichBanner == 1)
     {
         if (*fiveStarGuaranteed == 0)
         {
-            FiveStarNotUp();
-            *fiveStarGuaranteed = 1;
+            if(randomNum == 0)
+            {
+                FiveStarNotUp();
+                *fiveStarGuaranteed = 1;
+            } else if (randomNum == 1)
+            {
+                printf("\033[1;33m Neuvillette\n");
+                *totalUpCount += 1;
+                *fiveStarGuaranteed = 0;
+            }
         } else if (*fiveStarGuaranteed == 1)
         {
             printf("\033[1;33m Neuvillette\n");
+            *totalUpCount += 1;
             *fiveStarGuaranteed = 0;
         }
     }

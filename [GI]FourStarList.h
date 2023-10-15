@@ -173,3 +173,35 @@ void fourStarCharacterUp()
         printf("\033[1;35m Xingqiu\n");
     }
 }
+
+void fourStarRoll(int *fourStarGuaranteed)
+{
+    //Not Guaranteed
+    double randomNum;
+    if (*fourStarGuaranteed == 0)
+    {
+        randomNum = (double)rand() / RAND_MAX;
+        if (randomNum <= 0.5) // not obtain 'up' stuff
+        {
+            randomNum = (double)rand() / RAND_MAX;
+            if (randomNum <= 0.5) // half chance to be weapon
+            {
+                fourStarWeaponNotUp();
+                *fourStarGuaranteed = 1;
+            } else // half chance to be character
+            {
+                fourStarCharacterNotUp();
+                *fourStarGuaranteed = 1;
+            }
+        } else // half chance to get 'up' character
+        {
+            fourStarCharacterUp();
+            *fourStarGuaranteed = 0; // reset the guaranteed for 'up'
+        }
+
+    } else if (*fourStarGuaranteed == 1) 
+    {
+        fourStarCharacterUp();
+        *fourStarGuaranteed = 0;
+    }
+}

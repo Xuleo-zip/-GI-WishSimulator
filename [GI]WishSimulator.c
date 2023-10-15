@@ -5,7 +5,6 @@
 #include "[GI]FourStarList.h"
 #include "[GI]FiveStarList.h"
 
-#define targetFiveStar 0.5 // Get the 'UP' items
 #define threeStar 0.943
 
 void fourStarRoll(int *fourStarGuaranteed);
@@ -23,12 +22,21 @@ int main()
     int fourStarGuaranteed = 0;
     int fiveStarGuaranteed = 0; // Guaranteed system for 'up' characters
     int bannerChoice;
+    int totalUpCount = 0;
+    int averageUp;
 
 
     srand (time(NULL)); // Get random value
 
     printf("Choose a banner, 0 for Hutao and 1 for Neuvillette: ");
-    scanf("%d", &bannerChoice);    
+    scanf("%d", &bannerChoice);
+    
+    while ((bannerChoice != 0) && (bannerChoice != 1))
+    {
+        printf("Error Input.\n");
+        printf("Please input 0 or 1 here.\n");
+        scanf("%d", &bannerChoice);
+    }
 
     //Get user input of wishes first time.
     printf("Wish once or Wish ten times: \n");
@@ -80,7 +88,7 @@ int main()
                     baseFour = 1;
                 } else if (randomNum > drawCount * (threeStar + normalFourStars) && randomNum <= maxChance) // Larger than 0.994 and smaller or equal to 1.000
                 {
-                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                     baseFive = 1;
                     baseFour = 1;
                 }
@@ -95,7 +103,7 @@ int main()
                     baseFive++;
                 } else
                 {
-                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                     baseFive = 1;
                     baseFour = 1; //both of them are reset if five star appeared.
                 }
@@ -103,7 +111,7 @@ int main()
             {
                 if (randomNum >= (1 - drawCount * normalFiveStars) && randomNum <= maxChance) // reverse range lol
                 {
-                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                    FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                     baseFive = 1;
                     baseFour = 1;
                 } else if (randomNum <= (1 - drawCount * normalFiveStars) * threeStar )
@@ -143,7 +151,7 @@ int main()
                         baseFive++;
                     } else if (randomNum > newDrawCount  * (threeStar + normalFourStars) && randomNum <= maxChance) // Larger than 0.994 and smaller or equal to 1.000
                     {
-                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                         baseFive = 1;
                         baseFour = 1;
                     }
@@ -158,7 +166,7 @@ int main()
                         baseFive++;
                     } else // if not four star, five star
                     {
-                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                         baseFive = 1;
                         baseFour = 1; //both of them are reset if five star appeared.
                     }
@@ -166,7 +174,7 @@ int main()
                 {
                     if (randomNum >= (1 - newDrawCount * normalFiveStars) && randomNum <= maxChance) 
                     {
-                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed);
+                        FiveStarUpBanner(bannerChoice, &fiveStarGuaranteed, &totalUpCount);
                         baseFive = 1;
                         baseFour = 1;
                     } else if (randomNum <= (1 - newDrawCount * normalFiveStars) * threeStar )
@@ -197,37 +205,15 @@ int main()
 
     } while (drawCount == 1 || drawCount == 10);
 
-    return 0;
-}
+    averageUp = sumCount / totalUpCount;
 
-void fourStarRoll(int *fourStarGuaranteed)
-{
-    //Not Guaranteed
-    double randomNum;
-    if (*fourStarGuaranteed == 0)
+    printf("You have %d for the 'up' character, in your total %d wishes.\n", totalUpCount, sumCount);
+    if (averageUp > 0)
     {
-        randomNum = (double)rand() / RAND_MAX;
-        if (randomNum <= 0.5) // not obtain 'up' stuff
-        {
-            randomNum = (double)rand() / RAND_MAX;
-            if (randomNum <= 0.5) // half chance to be weapon
-            {
-                fourStarWeaponNotUp();
-                *fourStarGuaranteed = 1;
-            } else // half chance to be character
-            {
-                fourStarCharacterNotUp();
-                *fourStarGuaranteed = 1;
-            }
-        } else // half chance to get 'up' character
-        {
-            fourStarCharacterUp();
-            *fourStarGuaranteed = 0; // reset the guaranteed for 'up'
-        }
-
-    } else if (*fourStarGuaranteed == 1) 
+        printf("You got an 'up' character in every \033[1;33m %d \033[0m wishes\n", averageUp);
+    } else 
     {
-        fourStarCharacterUp();
-        *fourStarGuaranteed = 0;
+        printf("Sorry, you did not get any 'up' Characters.\n");
     }
+    return 0;
 }
